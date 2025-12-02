@@ -39,32 +39,48 @@ The project follows a standard **Spring Boot/Maven** convention and adheres to t
 
 The core application logic is located within the `src/main/java/com.example.demo` package, organized into four primary directories:
 
-Project11/
-├── src/main/java/com.example.demo/
-│   ├── com.example.demo.controller/  
-│   │   ├── AdminViewController.java  // 🔐 Handles Admin-specific event/registration views and logic
-│   │   ├── AuthController.java       // 🔑 Handles user/admin login and registration
-│   │   ├── EventController.java      // 🎟️ Handles common event viewing logic
-│   │   ├── StudentController.java    // 🧑‍🎓 Handles Student-specific registration views and logic
-│   │   └── ViewController.java       // 🏠 Handles general application views (e.g., home page)
-│   ├── com.example.demo.model/      
-│   │   ├── Admin.java                // 👤 Entity representing an Administrator
-│   │   ├── Department.java           // 🏢 Entity for departments (if applicable)
-│   │   ├── Event.java                // 🗓️ Core Entity representing an event
-│   │   ├── Registration.java         // ✅ Entity linking Students to Events
-│   │   └── Student.java              // 🧑‍🎓 Entity representing a Student
-│   ├── com.example.demo.repository/  
-│   │   ├── IAdminRepo.java           // 💾 JpaRepository for Admin data operations
-│   │   ├── IEventRepo.java           // 💾 JpaRepository for Event data operations
-│   │   ├── IRegistrationRepo.java    // 💾 JpaRepository for Registration data operations
-│   │   └── IStudentRepo.java         // 💾 JpaRepository for Student data operations
-│   ├── com.example.demo.service/     
-│   │   ├── EventService.java         // ⚙️ Business logic for Event management
-│   │   └── StudentService.java       // ⚙️ Business logic for Student management (e.g., registration)
-│   └── Project111Application.java    // 🚀 Main Spring Boot entry point
-├── src/main/resources/
-│   ├── static/                       // 🖼️ Stores static assets (CSS, JS, images, compiled Tailwind CSS)
-│   │   └── assets/                   
-│   ├── templates/                    // 📄 Stores Thymeleaf HTML files (Views)
-│   └── application.properties        // ⚙️ Application configuration (e.g., database connection, port)
-└── ...
+College-event-management/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/example/demo/
+│   │   │       ├── Project111Application.java
+│   │   │
+│   │   │       ├── controller/
+│   │   │       │   ├── AdminViewController.java
+│   │   │       │   ├── AuthController.java
+│   │   │       │   ├── EventController.java
+│   │   │       │   ├── StudentController.java
+│   │   │       │   ├── StudentViewController.java
+│   │   │       │   └── ViewController.java
+│   │   │
+│   │   │       ├── model/
+│   │   │       │   ├── Admin.java
+│   │   │       │   ├── Department.java
+│   │   │       │   ├── Event.java
+│   │   │       │   ├── Registration.java
+│   │   │       │   └── Student.java
+│   │   │
+│   │   │       ├── repository/
+│   │   │       │   ├── IAdminRepo.java
+│   │   │       │   ├── IEventRepo.java
+│   │   │       │   ├── IRegistrationRepo.java
+│   │   │       │   └── IStudentRepo.java
+│   │   │
+│   │   │       └── service/
+│   │   │           ├── EventService.java
+│   │   │           └── StudentService.java
+│   │   │
+│   │   ├── resources/
+│   │   │   ├── static/
+│   │   │   │   └── assets/
+│   │   │   ├── templates/
+│   │   │   └── application.properties
+│   │
+│   └── test/
+│       └── com/example/demo/
+│
+├── README.md
+└── pom.xml
+
