@@ -1,0 +1,131 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Student Dashboard</title>
+
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</head>
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-[#134686] text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <!-- Left: Logo / Brand -->
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl font-bold tracking-tight">EventHub</span>
+          <span class="text-xs bg-white/20 px-2 py-0.5 rounded-full">Student</span>
+        </div>
+
+       
+
+        <!-- Right: User + Logout -->
+        <div class="flex items-center space-x-3 text-sm">
+			<a th:href="@{/}" class="hover:text-indigo-200 transition">Home</a>
+          <a th:href="@{/logout}"
+             class="px-3 py-1 rounded-full bg-white text-indigo-600 font-semibold text-xs hover:bg-black hover:text-white transition">
+            Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Page Header -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div>
+        
+		<h1 class="text-2xl sm:text-3xl font-bold text-slate-800">
+		  Hi, <span th:text="${session.username}">Student</span> 👋
+		</h1>
+
+        <p class="text-sm text-slate-500 mt-1">
+          Browse upcoming events and manage your registrations.
+        </p>
+      </div>
+      
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      <!-- Available Events (left, bigger) -->
+      <section class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-slate-800">Available Events</h2>
+          <span class="text-xs text-slate-500">Register with a single click</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                <th class="text-left px-5 py-3">ID</th>
+                <th class="text-left px-5 py-3">Name</th>
+                <th class="text-left px-5 py-3">Date</th>
+                <th class="text-center px-5 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr th:each="ev : ${events}" class="hover:bg-slate-50/80">
+                <td class="px-5 py-3 text-slate-700" th:text="${ev.eventId}">id</td>
+                <td class="px-5 py-3 text-slate-800 font-medium" th:text="${ev.eventName}">name</td>
+                <td class="px-5 py-3 text-slate-600" th:text="${ev.eventDate}">date</td>
+                <td class="px-5 py-3">
+                  <form th:action="@{|/student/register/${ev.eventId}|}" method="post" class="flex justify-center">
+                    <button type="submit"
+                            class="px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500 text-white shadow hover:bg-emerald-600 active:scale-95 transition">
+                      Register
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(events)}">
+                <td colspan="4" class="px-5 py-4 text-center text-slate-400 text-sm">
+                  No events available right now. Please check back later.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Your Registrations (right) -->
+      <section class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-slate-800">Your Registrations</h3>
+          <span class="text-xs text-slate-500">Recent activity</span>
+        </div>
+
+        <div class="p-5 flex-1">
+          <ul class="space-y-3" th:if="${!#lists.isEmpty(registrations)}">
+            <li th:each="r : ${registrations}"
+                class="flex flex-col rounded-xl border border-slate-100 px-4 py-3 bg-slate-50">
+              <span class="text-sm font-semibold text-slate-800"
+                    th:text="${r.eventId}">Event ID</span>
+              <span class="text-xs text-slate-500 mt-1"
+                    th:text="'Registered at: ' + ${r.registeredAt}">
+                Registered at: time
+              </span>
+            </li>
+          </ul>
+          <p class="text-sm text-slate-400 text-center" th:if="${#lists.isEmpty(registrations)}">
+            You haven’t registered for any events yet.
+          </p>
+        </div>
+        <div class="px-5 pb-4 pt-0">
+          <a th:href="@{/}"
+             class="inline-flex items-center text-xs font-medium text-indigo-600 hover:text-indigo-800">
+            ← Back to Home
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

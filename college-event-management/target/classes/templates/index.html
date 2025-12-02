@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Event Management - Home</title>
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</head>
+<body>
+
+  <!-- Minimal Navbar: only project name -->
+  <header class="site-header simple-nav">
+    <div class="nav-container">
+      <a th:href="@{/}" class="logo brand-animate">
+        Event Management System
+      </a>
+    </div>
+  </header>
+
+  <main class="container home-main">
+    <section class="card home-card">
+      <h1>Welcome!</h1>
+      <p class="home-subtitle">
+        <b>🚀 Get Started</b><br>
+        Login now to explore events!!
+      </p>
+      <div class="button-group">
+        <div class="button-row">
+          <a th:href="@{/login}" class="card action">Login</a>
+          <a th:href="@{/signup}" class="card action">Sign Up</a>
+        </div>
+        <a th:href="@{/student/dashboard}" class="card action view-events-btn">
+          View Events
+        </a>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

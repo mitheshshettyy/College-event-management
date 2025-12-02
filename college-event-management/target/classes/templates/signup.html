@@ -1,0 +1,134 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Student Sign Up — Event Management</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Your existing CSS (optional, if still needed) -->
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="bg-[#134686] text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand -->
+        <a th:href="@{/}" class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wide">EventHub</span>
+          <span class="text-[11px] px-2 py-0.5 rounded-full bg-white/20 uppercase">
+            Student
+          </span>
+        </a>
+
+        <!-- Links -->
+        <div class="flex items-center gap-4 text-sm font-medium">
+          <a th:href="@{/}" class="hover:text-slate-200">Home</a>
+          
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="flex-1 flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-xl bg-white rounded-2xl shadow-lg border border-slate-100 p-8">
+      <h2 class="text-2xl font-bold text-slate-900 mb-1">Student Sign Up</h2>
+      <p class="text-xs text-slate-500 mb-6">
+        Create an account to view and register for events.
+      </p>
+
+      <form th:action="@{/signup}" method="post" th:object="${student}" class="space-y-4">
+        <!-- First Name -->
+        <div>
+          <label for="firstName" class="block text-xs font-semibold text-slate-600 mb-1">
+            First Name
+          </label>
+          <input id="firstName"
+                 th:field="*{firstName}"
+                 placeholder="First name"
+                 required
+                 class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800
+                        focus:outline-none focus:ring-2 focus:ring-[#20B2AA] focus:border-transparent"
+          />
+        </div>
+
+        <!-- Last Name -->
+        <div>
+          <label for="lastName" class="block text-xs font-semibold text-slate-600 mb-1">
+            Last Name
+          </label>
+          <input id="lastName"
+                 th:field="*{lastName}"
+                 placeholder="Last name"
+                 class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800
+                        focus:outline-none focus:ring-2 focus:ring-[#20B2AA] focus:border-transparent"
+          />
+        </div>
+
+        <!-- USN & Department -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="age" class="block text-xs font-semibold text-slate-600 mb-1">
+              Age
+            </label>
+            <input id="age"
+                   th:field="*{age}"
+                   type="number"
+                   min="10" max="120"
+                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800
+                          focus:outline-none focus:ring-2 focus:ring-[#20B2AA] focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label for="studentDepartment" class="block text-xs font-semibold text-slate-600 mb-1">
+              Department
+            </label>
+            <input id="studentDepartment"
+                   th:field="*{studentDepartment}"
+                   placeholder="CSE / ECE / ME ..."
+                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800
+                          focus:outline-none focus:ring-2 focus:ring-[#20B2AA] focus:border-transparent"
+            />
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="pt-2 flex flex-col sm:flex-row gap-3">
+          <button type="submit"
+                  class="flex-1 inline-flex justify-center items-center px-4 py-2.5 rounded-lg
+                         text-sm font-semibold bg-[#20B2AA] text-white shadow-sm
+                         hover:bg-[#188C87] transition active:scale-95">
+            Create Account
+          </button>
+        </div>
+		<center>
+		<div>
+          <a th:href="@{/login}"
+             class="text-center mt-5 text-xs text-slate-500 hover:text-[#20B2AA]">
+            ← Back to Login
+          </a>
+		  </div>
+		  </center>
+        </div>
+      </form>
+
+      <!-- Messages -->
+      <div th:if="${message}"
+           th:text="${message}"
+           class="mt-4 text-sm text-emerald-600 text-center">
+      </div>
+      <div th:if="${error}"
+           th:text="${error}"
+           class="mt-4 text-sm text-red-600 text-center">
+      </div>
+    </div>
+  </main>
+
+  <script th:src="@{/assets/js/theme.js}" defer></script>
+</body>
+</html>

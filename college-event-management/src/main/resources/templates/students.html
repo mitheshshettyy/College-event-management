@@ -1,0 +1,137 @@
+<!-- students.html -->
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Students - Event Management</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</head>
+<body>
+
+  <div th:replace="fragments/layout :: header"></div>
+
+  <main class="container">
+    <h1>Students</h1>
+
+    <section class="card">
+      <h2>Add Student</h2>
+      <form id="addStudentForm">
+        <label>First name</label><input name="firstName" required>
+        <label>Last name</label><input name="lastName" required>
+        <label>Age</label><input name="age" type="number" required min="16">
+        <label>Department</label>
+        <select name="studentDepartment" required>
+          <option value="ME">ME</option>
+          <option value="ECE">ECE</option>
+          <option value="CIVIL">CIVIL</option>
+          <option value="CSE">CSE</option>
+        </select>
+        <button type="submit">Add Student</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Students List</h2>
+      <button id="refreshStudents">Refresh</button>
+      <table id="studentsTable">
+        <thead><tr><th>ID</th><th>First</th><th>Last</th><th>Age</th><th>Department</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Update Department</h2>
+      <form id="updateDeptForm">
+        <label>Student ID</label><input name="id" type="number" required>
+        <label>New Department</label>
+        <select name="department" required>
+          <option value="ME">ME</option>
+          <option value="ECE">ECE</option>
+          <option value="CIVIL">CIVIL</option>
+          <option value="CSE">CSE</option>
+        </select>
+        <button type="submit">Update Department</button>
+      </form>
+    </section>
+
+    <p><a th:href="@{/}">Back to Home</a></p>
+  </main>
+
+  <div th:replace="fragments/layout :: footer"></div>
+
+  <script th:src="@{/assets/js/api.js}"></script>
+  <script>
+    const studentsTableBody = document.querySelector('#studentsTable tbody');
+    const refreshStudentsBtn = document.getElementById('refreshStudents');
+    const addStudentForm = document.getElementById('addStudentForm');
+    const updateDeptForm = document.getElementById('updateDeptForm');
+
+    async function loadStudents() {
+      try {
+        const students = await api.get('/students');
+        studentsTableBody.innerHTML = '';
+        students.forEach(stu=>{
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${stu.studentId}</td>
+            <td>${stu.firstName}</td>
+            <td>${stu.lastName}</td>
+            <td>${stu.age}</td>
+            <td>${stu.studentDepartment ?? ''}</td>
+            <td><button data-id="${stu.studentId}" class="deleteBtn">Delete</button></td>`;
+          studentsTableBody.appendChild(tr);
+        });
+        attachDeleteHandlers();
+      } catch(err){
+        console.error('loadStudents failed', err);
+        alert('Failed to load students');
+      }
+    }
+
+    function attachDeleteHandlers(){
+      document.querySelectorAll('.deleteBtn').forEach(btn=>{
+        btn.addEventListener('click', async (e)=>{
+          const id = e.target.dataset.id;
+          if(confirm('Delete student '+id+' ?')) {
+            try {
+              await api.del(`/student/${id}`);
+              loadStudents();
+            } catch(err){
+              alert('Delete failed: ' + err);
+            }
+          }
+        });
+      });
+    }
+
+    refreshStudentsBtn.addEventListener('click', loadStudents);
+    window.addEventListener('load', loadStudents);
+
+    addStudentForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(addStudentForm).entries());
+      data.age = parseInt(data.age);
+      try {
+        await api.post('/student', data);
+        addStudentForm.reset();
+        loadStudents();
+      } catch(err){
+        alert('Add failed: ' + err);
+      }
+    });
+
+    updateDeptForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const { id, department } = Object.fromEntries(new FormData(updateDeptForm).entries());
+      try {
+        await api.put(`/student/${id}/${department}`);
+        updateDeptForm.reset();
+        loadStudents();
+      } catch(err){
+        alert('Update failed: ' + err);
+      }
+    });
+  </script>
+</body>
+</html>

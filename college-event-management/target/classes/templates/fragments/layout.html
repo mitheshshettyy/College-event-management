@@ -1,0 +1,48 @@
+<!-- fragments/layout.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
+	<nav>
+	     <a href="#">Events</a>
+	     <a href="#">Students</a>
+	     <button id="theme-toggle" aria-label="Toggle Dark Mode">
+	         🌙
+	     </button>
+	 </nav>
+  </head>
+  <nav>
+      <a href="#">Events</a>
+      <a href="#">Students</a>
+      <button id="theme-toggle" aria-label="Toggle Dark Mode">
+          🌙
+      </button>
+  </nav>
+
+  <body>
+    <!-- header fragment -->
+    <div th:fragment="header">
+      <header class="site-header">
+        <div class="container header-inner">
+          <h1><a th:href="@{/}">Event Management</a></h1>
+          <nav>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/events.html}">Events</a>
+            <a th:href="@{/students.html}">Students</a>
+          </nav>
+        </div>
+      </header>
+    </div>
+
+    <!-- footer fragment -->
+    <div th:fragment="footer">
+      <footer class="site-footer">
+        <div class="container">
+          <small>&copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> Project111</small>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

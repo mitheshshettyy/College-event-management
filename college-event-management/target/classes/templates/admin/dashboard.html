@@ -1,0 +1,131 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Optional: your existing CSS -->
+  <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="bg-[#134686] text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand -->
+        <a th:href="@{/}" class="flex items-center gap-2">
+          <span class="text-2xl font-bold tracking-wide">EventHub</span>
+          <span class="text-[11px] px-2 py-0.5 rounded-full bg-white/20 uppercase">Admin</span>
+        </a>
+
+        <!-- Links -->
+        <div class="flex items-center gap-4 text-sm font-medium">
+          <a th:href="@{/}" class="hover:text-slate-200">Home</a>
+       
+		  <a th:href="@{/logout}"
+		    class="px-3 py-1 rounded-full bg-white text-black text-xs font-semibold hover:bg-black hover:text-white transition">
+		    Logout
+		  </a>
+
+		  
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-6xl mx-auto px-4 py-8">
+    <!-- Header row -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+      <div>
+        <h1 class="text-3xl font-bold text-slate-900">Admin Dashboard</h1>
+        <p class="text-sm text-slate-500 mt-1">
+          Manage events and view registrations.
+        </p>
+      </div>
+      <a th:href="@{/admin/events/new}"
+         class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold
+                bg-[#20B2AA] text-white shadow-sm hover:bg-[#188C87] transition active:scale-95">
+        + Create New Event
+      </a>
+    </div>
+
+    <!-- Events Table Card -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold text-slate-800">Events</h2>
+        <span class="text-xs text-slate-500">Click "View Registrations" for attendee details.</span>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-slate-100">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="bg-slate-50 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              <th class="px-4 py-3 text-left">ID</th>
+              <th class="px-4 py-3 text-left">Name</th>
+              <th class="px-4 py-3 text-left">Location</th>
+              <th class="px-4 py-3 text-left">Date</th>
+              <th class="px-4 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr th:each="ev : ${events}" class="hover:bg-slate-50">
+              <td class="px-4 py-2" th:text="${ev.eventId}">ID</td>
+              <td class="px-4 py-2 font-medium text-slate-800" th:text="${ev.eventName}">Name</td>
+              <td class="px-4 py-2 text-slate-700" th:text="${ev.locationOfEvent}">Loc</td>
+              <td class="px-4 py-2 text-slate-600" th:text="${ev.eventDate}">Date</td>
+              <td class="px-4 py-2">
+                <div class="flex flex-wrap items-center justify-center gap-2">
+                  <!-- Edit -->
+                  <a th:href="@{|/admin/events/edit/${ev.eventId}|}"
+                     class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold
+                            bg-blue-100 text-blue-700 hover:bg-blue-200 transition">
+                    Edit
+                  </a>
+
+                  <!-- Delete -->
+                  <form th:action="@{|/admin/events/delete/${ev.eventId}|}"
+                        method="post"
+                        onsubmit="return confirm('Delete?')">
+                    <button type="submit"
+                            class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold
+                                   bg-red-100 text-red-700 hover:bg-red-200 transition">
+                      Delete
+                    </button>
+                  </form>
+
+                  <!-- View Registrations -->
+                  <a th:href="@{|/admin/events/${ev.eventId}/registrations|}"
+                     class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold
+                            bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    View Registrations
+                  </a>
+                </div>
+              </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(events)}">
+              <td colspan="5" class="px-4 py-4 text-center text-slate-400 text-sm">
+                No events created yet. Click "Create New Event" to get started.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Back Home (mobile helper) -->
+    <div class="mt-6 text-center">
+      <a th:href="@{/}"
+         class="inline-flex items-center text-xs font-semibold text-[#20B2AA] hover:text-[#188C87]">
+        ← Back to Home
+      </a>
+    </div>
+  </main>
+</body>
+</html>
